@@ -1,11 +1,12 @@
 
 
-//#import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
+
+NS_ASSUME_NONNULL_BEGIN
 
 @interface YAImageCache : NSObject
 
-+ (YAImageCache *)sharedImageCache;
++ (instancetype)sharedImageCache;
 
 /**
  *  设置 cache 的上限
@@ -26,7 +27,7 @@
  *
  *  @return 对应的 image，如果取不到则返回 nil
  */
-- (UIImage *)getImageWithKey:(NSString *)key;
+- (nullable UIImage *)getImageWithKey:(nonnull NSString *)key;
 
 /**
  *  将 key 所对应的值设置为 image，如果原本有值，则将原本的值返回。
@@ -36,6 +37,8 @@
  *
  *  @return 如果 key 本来对应有对象，则替换并返回原有对象，否则返回 nil
  */
-- (UIImage *)putImage:(UIImage *)image forKey:(NSString *)key;
+- (nullable UIImage *)putImage:(nonnull UIImage *)image forKey:(nonnull NSString *)key;
+
+NS_ASSUME_NONNULL_END
 
 @end

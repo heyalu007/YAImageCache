@@ -15,7 +15,7 @@ const NSInteger kDefaultMaxSize = 960*640*10;
 
 @implementation YAImageCache
 
-+ (YAImageCache *)sharedImageCache
++ (instancetype)sharedImageCache
 {
     static dispatch_once_t pred;
     static YAImageCache *sharedManager = nil;
@@ -52,7 +52,7 @@ const NSInteger kDefaultMaxSize = 960*640*10;
 - (UIImage *)getImageWithKey:(NSString *)key
 {
     if (key == nil) {
-        [NSException raise:@"Null Pointer" format:@"key == nil"];
+        return nil;
     }
     NSString *cKey = [key copy];
     @synchronized(self) {
@@ -69,7 +69,7 @@ const NSInteger kDefaultMaxSize = 960*640*10;
 - (UIImage *)putImage:(UIImage *)image forKey:(NSString *)key
 {
     if (key == nil || image == nil) {
-        [NSException raise:@"Null Pointer" format:@"key == nil || image == nil"];
+        return nil;
     }
     NSString *cKey = [key copy];
     UIImage *previous;
@@ -92,7 +92,7 @@ const NSInteger kDefaultMaxSize = 960*640*10;
     while (YES) {
         @synchronized (self) {
             if (self.currentSize < 0 || ([self.imageCache count] == 0 && self.currentSize != 0)) {
-                [NSException raise:@"Illegal State" format:@"inconsistent size."];
+                return;
             }
             
             if (self.currentSize <= maxSize || [self.imageCache count] == 0) {
@@ -102,7 +102,7 @@ const NSInteger kDefaultMaxSize = 960*640*10;
             NSString *key = [_keys lastObject];
             UIImage *image = self.imageCache[key];
             if (image == nil) {
-                [NSException raise:@"Illegal State" format:@"inconsistent key-value set."];
+                return;
             }
             
             [_keys removeObject:key];
@@ -115,7 +115,7 @@ const NSInteger kDefaultMaxSize = 960*640*10;
 - (void)resize:(NSInteger)maxSize
 {
     if (maxSize <= 0) {
-        [NSException raise:@"Illegal Argument" format:@"maxSize <= 0"];
+        return;
     }
     
     @synchronized (self) {
